@@ -60,37 +60,38 @@ void my_main() {
 
   s = new_stack();
   tmp = new_matrix(4, 1000);
+  edges = new_matrix(4,4);
   clear_screen( t );
 
   for (i=0;i<lastop;i++) {
     switch (op[i].opcode) {
 
       case PUSH:
-        printf("%d: Push", i);
+        printf("%d: Push\n", i);
         push(s);
         break;
 
       case POP:
-        printf("%d: Pop", i);
+        printf("%d: Pop\n", i);
         pop(s);
         break;
 
       case MOVE:
-        printf("%d: Move", i);
+        printf("%d: Move\n", i);
         tmp = make_translate(op[i].op.move.d[0], op[i].op.move.d[1], op[i].op.move.d[2]);
         matrix_mult(peek(s),tmp);
         copy_matrix(tmp, peek(s));
         break;
 
       case SCALE:
-        printf("%d: Scale", i);
+        printf("%d: Scale\n", i);
         tmp = make_scale(op[i].op.scale.d[0], op[i].op.scale.d[1], op[i].op.scale.d[2]);
         matrix_mult(peek(s),tmp);
         copy_matrix(tmp, peek(s));
         break;
 
       case ROTATE:
-        printf("%d: Rotate", i);
+        printf("%d: Rotate\n", i);
         if (op[i].op.rotate.axis == 'x'){
           tmp = make_rotX(op[i].op.rotate.degrees);
         }
@@ -107,16 +108,15 @@ void my_main() {
         break;
 
       case BOX:
-        printf("%d: Box", i);
-        add_box(edges, op[i].op.box.d0[0], op[i].op.box.d0[1], op[i].op.box.d0[2],
-                op[i].op.box.d1[0], op[i].op.box.d1[1], op[i].op.box.d1[2]);
+        printf("%d: Box\n", i);
+        add_box(edges, op[i].op.box.d0[0], op[i].op.box.d0[1], op[i].op.box.d0[2], op[i].op.box.d1[0], op[i].op.box.d1[1], op[i].op.box.d1[2]);
         matrix_mult(peek(s), edges);
         draw_polygons(edges, t, g);
         edges->lastcol = 0;
         break;
 
       case SPHERE:
-        printf("%d: Sphere", i);
+        printf("%d: Sphere\n", i);
         add_sphere(edges, op[i].op.sphere.d[0], op[i].op.sphere.d[1], op[i].op.sphere.d[2], op[i].op.sphere.r, 0.05);
         matrix_mult(peek(s), edges);
         draw_polygons(edges, t, g);
@@ -124,13 +124,19 @@ void my_main() {
         break;
 
       case TORUS:
-        printf("%d: Torus", i);
+        printf("%d: Torus\n", i);
         add_torus(edges, op[i].op.torus.d[0], op[i].op.torus.d[1], op[i].op.torus.d[2],
                   op[i].op.torus.r0, op[i].op.torus.r1, 0.05);
         matrix_mult(peek(s), edges);
         draw_polygons(edges, t, g);
         edges->lastcol = 0;
         break;
+
+      case DISPLAY:
+        display(t);
+
+      // case SAVE:
+        // save_extension(t, op[i].op.save.p);
     }
     printf("\n");
   }
