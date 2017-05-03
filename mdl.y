@@ -29,10 +29,10 @@
 %token COMMENT
 %token <val> DOUBLE
 %token <string> LIGHT AMBIENT
-%token <string> CONSTANTS SAVE_COORDS CAMERA 
+%token <string> CONSTANTS SAVE_COORDS CAMERA
 %token <string> SPHERE TORUS BOX LINE CS MESH TEXTURE
 %token <string> STRING
-%token <string> SET MOVE SCALE ROTATE BASENAME SAVE_KNOBS TWEEN FRAMES VARY 
+%token <string> SET MOVE SCALE ROTATE BASENAME SAVE_KNOBS TWEEN FRAMES VARY
 %token <string> PUSH POP SAVE GENERATE_RAYFILES
 %token <string> SHADING SHADING_TYPE SETKNOBS FOCAL DISPLAY WEB
 %token <string> CO
@@ -43,7 +43,7 @@ input:
 | input command
 ;
 
-command: 
+command:
 COMMENT {}|
 
 LIGHT STRING DOUBLE DOUBLE DOUBLE DOUBLE DOUBLE DOUBLE
@@ -58,7 +58,7 @@ LIGHT STRING DOUBLE DOUBLE DOUBLE DOUBLE DOUBLE DOUBLE
   l->c[1]= $7;
   l->c[2]= $8;
   op[lastop].opcode=LIGHT;
-  op[lastop].op.light.c[0] = $6; 
+  op[lastop].op.light.c[0] = $6;
   op[lastop].op.light.c[1] = $7;
   op[lastop].op.light.c[2] = $8;
   op[lastop].op.light.c[3] = 0;
@@ -67,7 +67,7 @@ LIGHT STRING DOUBLE DOUBLE DOUBLE DOUBLE DOUBLE DOUBLE
 }|
 
 MOVE DOUBLE DOUBLE DOUBLE STRING
-{ 
+{
   lineno++;
   op[lastop].opcode = MOVE;
   op[lastop].op.move.d[0] = $2;
@@ -217,7 +217,7 @@ SPHERE DOUBLE DOUBLE DOUBLE DOUBLE STRING
   op[lastop].op.sphere.cs = add_symbol($6,SYM_MATRIX,m);
   lastop++;
 }|
-SPHERE STRING DOUBLE DOUBLE DOUBLE DOUBLE 
+SPHERE STRING DOUBLE DOUBLE DOUBLE DOUBLE
 {
   lineno++;
   op[lastop].opcode = SPHERE;
@@ -246,7 +246,7 @@ SPHERE STRING DOUBLE DOUBLE DOUBLE DOUBLE STRING
   c = (struct constants *)malloc(sizeof(struct constants));
   op[lastop].op.sphere.constants = add_symbol($2,SYM_CONSTANTS,c);
   lastop++;
-}| 
+}|
 
 TORUS DOUBLE DOUBLE DOUBLE DOUBLE DOUBLE
 {
@@ -310,7 +310,7 @@ TORUS STRING DOUBLE DOUBLE DOUBLE DOUBLE DOUBLE STRING
   op[lastop].op.torus.cs = add_symbol($8,SYM_MATRIX,m);
 
   lastop++;
-}| 
+}|
 BOX DOUBLE DOUBLE DOUBLE DOUBLE DOUBLE DOUBLE
 {
   lineno++;
@@ -603,22 +603,22 @@ ROTATE STRING DOUBLE STRING
   switch (*$2)
     {
     case 'x':
-    case 'X': 
+    case 'X':
       op[lastop].op.rotate.axis = 0;
       break;
     case 'y':
-    case 'Y': 
+    case 'Y':
       op[lastop].op.rotate.axis = 1;
       break;
     case 'z':
-    case 'Z': 
+    case 'Z':
       op[lastop].op.rotate.axis = 2;
       break;
     }
 
   op[lastop].op.rotate.degrees = $3;
   op[lastop].op.rotate.p = add_symbol($4,SYM_VALUE,0);
-  
+
   lastop++;
 }|
 ROTATE STRING DOUBLE
@@ -628,15 +628,15 @@ ROTATE STRING DOUBLE
   switch (*$2)
     {
     case 'x':
-    case 'X': 
+    case 'X':
       op[lastop].op.rotate.axis = 0;
       break;
     case 'y':
-    case 'Y': 
+    case 'Y':
       op[lastop].op.rotate.axis = 1;
       break;
     case 'z':
-    case 'Z': 
+    case 'Z':
       op[lastop].op.rotate.axis = 2;
       break;
     }
@@ -782,15 +782,15 @@ extern FILE *yyin;
 int main(int argc, char **argv) {
 
   yyin = fopen(argv[1],"r");
-  
+
   printf("hello\n");
   yyparse();
   printf("hello\n");
   //COMMENT OUT PRINT_PCODE AND UNCOMMENT
   //MY_MAIN IN ORDER TO RUN YOUR CODE
-  
-  print_pcode();
-  //my_main();
 
-  return 0;    
+  //print_pcode();
+  my_main();
+
+  return 0;
 }
