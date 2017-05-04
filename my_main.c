@@ -81,6 +81,7 @@ void my_main() {
         tmp = make_translate(op[i].op.move.d[0], op[i].op.move.d[1], op[i].op.move.d[2]);
         matrix_mult(peek(s),tmp);
         copy_matrix(tmp, peek(s));
+        tmp->lastcol = 0;
         break;
 
       case SCALE:
@@ -88,23 +89,25 @@ void my_main() {
         tmp = make_scale(op[i].op.scale.d[0], op[i].op.scale.d[1], op[i].op.scale.d[2]);
         matrix_mult(peek(s),tmp);
         copy_matrix(tmp, peek(s));
+        tmp->lastcol = 0;
         break;
 
       case ROTATE:
         printf("%d: Rotate\n", i);
-        if (op[i].op.rotate.axis == 'x'){
+        if (op[i].op.rotate.axis == 0){
           tmp = make_rotX(op[i].op.rotate.degrees);
         }
 
-        else if (op[i].op.rotate.axis == 'y'){
+        else if (op[i].op.rotate.axis == 1){
           tmp = make_rotY(op[i].op.rotate.degrees);
         }
 
-        else if (op[i].op.rotate.axis == 'z'){
+        else if (op[i].op.rotate.axis == 2){
           tmp = make_rotZ(op[i].op.rotate.degrees);
         }
         matrix_mult(peek(s),tmp);
         copy_matrix(tmp, peek(s));
+        tmp->lastcol = 0;
         break;
 
       case BOX:
@@ -134,9 +137,11 @@ void my_main() {
 
       case DISPLAY:
         display(t);
+        break;
 
-      // case SAVE:
-        // save_extension(t, op[i].op.save.p);
+      case SAVE:
+        save_extension(t, op[i].op.save.p->name);
+        break;
     }
     printf("\n");
   }
