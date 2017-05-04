@@ -94,6 +94,7 @@ void my_main() {
 
       case ROTATE:
         printf("%d: Rotate\n", i);
+        op[i].op.rotate.degrees = op[i].op.rotate.degrees * (M_PI/180);
         if (op[i].op.rotate.axis == 0){
           tmp = make_rotX(op[i].op.rotate.degrees);
         }
