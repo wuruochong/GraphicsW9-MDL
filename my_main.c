@@ -143,6 +143,14 @@ void my_main() {
       case SAVE:
         save_extension(t, op[i].op.save.p->name);
         break;
+
+      case LINE:
+        printf("%d: Line\n", i);
+        add_edge(edges, op[i].op.line.p0[0], op[i].op.line.p0[1], op[i].op.line.p0[2], op[i].op.line.p1[0], op[i].op.line.p1[1], op[i].op.line.p1[2]);
+        matrix_mult(peek(s), edges);
+        draw_lines(edges, t, g);
+        edges->lastcol = 0;
+
     }
     printf("\n");
   }
